@@ -369,53 +369,58 @@
             background: var(--primary-dark);
         }
 
-        .team-section {
-            margin-top: 3rem;
+        .slide-team-layout {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 2rem;
+            align-items: start;
+            margin-top: 1.5rem;
         }
 
-        .team-section h3 {
-            font-size: 1.8rem;
+        .team-column h3,
+        .partners-column h3 {
+            font-size: 1.3rem;
             font-weight: 700;
             color: var(--accent-green);
-            margin-bottom: 1.5rem;
-            text-align: center;
+            margin-bottom: 1rem;
         }
 
-        .team-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 2rem;
-            margin-bottom: 3rem;
+        .team-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
         }
 
         .team-member {
             background: var(--dark-card);
-            padding: 1.5rem;
-            border-radius: 12px;
-            text-align: center;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            padding: 0.8rem 1rem;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
             border: 1px solid rgba(255,255,255,0.05);
             transition: all 0.3s ease;
         }
 
         .team-member:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 16px rgba(151, 239, 65, 0.1);
+            transform: translateX(4px);
+            box-shadow: 0 4px 12px rgba(151, 239, 65, 0.1);
         }
 
         .team-member-avatar {
-            width: 72px;
-            height: 72px;
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
             background: linear-gradient(135deg, var(--primary-blue), var(--accent-green));
-            margin: 0 auto 1rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.8rem;
+            font-size: 1rem;
             color: var(--primary-dark);
             font-weight: 700;
             font-family: var(--font-heading);
+            flex-shrink: 0;
             overflow: hidden;
         }
 
@@ -425,60 +430,78 @@
             object-fit: cover;
         }
 
+        .team-member-info {
+            display: flex;
+            flex-direction: column;
+        }
+
         .team-member-name {
-            font-size: 1.1rem;
+            font-size: 0.95rem;
             font-weight: 700;
             color: var(--primary-blue);
-            margin-bottom: 0.3rem;
         }
 
         .team-member-role {
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             color: var(--text-muted);
             font-weight: 500;
         }
 
-        .partners-list {
+        .center-column {
             display: flex;
-            flex-wrap: wrap;
-            gap: 1.5rem;
+            flex-direction: column;
+            align-items: center;
             justify-content: center;
-        }
-
-        .partner-tag {
-            background: transparent;
-            padding: 1rem 2rem;
-            border-radius: 10px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: var(--accent-green);
-            border: 2px solid var(--accent-green);
-        }
-
-        .contact-info {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin: 2rem 0;
+            text-align: center;
         }
 
         .qr-placeholder {
-            width: 200px;
-            height: 200px;
+            width: 180px;
+            height: 180px;
             background: white;
-            margin: 2rem auto;
             border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: var(--primary-dark);
             font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .contact-label {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-light);
+            margin-bottom: 0.8rem;
         }
 
         .cta-text {
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             font-weight: 700;
-            margin-top: 2rem;
+            margin-top: 1rem;
             color: var(--accent-green);
+        }
+
+        .partners-column {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .partners-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .partner-tag {
+            background: transparent;
+            padding: 0.8rem 1.5rem;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--accent-green);
+            border: 2px solid var(--accent-green);
+            text-align: center;
         }
 
         /* Navigation */
@@ -596,6 +619,14 @@
             .architecture-image-container {
                 min-height: auto;
                 padding: 1rem;
+            }
+
+            .slide-team-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .center-column {
+                order: -1;
             }
         }
 
@@ -789,56 +820,70 @@
         <div class="container">
             <h2 class="section-title">Команда и контакты</h2>
 
-            <div class="team-section">
-                <h3>👥 Команда</h3>
-                <div class="team-grid">
-                    <div class="team-member">
-                        <div class="team-member-avatar">АА</div>
-                        <div class="team-member-name">Андрейченко Анна</div>
-                        <div class="team-member-role">PhD, к.ф.-м.н.</div>
-                    </div>
-                    <div class="team-member">
-                        <div class="team-member-avatar">ЧВ</div>
-                        <div class="team-member-name">Чуканов Вячеслав</div>
-                        <div class="team-member-role">к.ф.-м.н.</div>
-                    </div>
-                    <div class="team-member">
-                        <div class="team-member-avatar">ДД</div>
-                        <div class="team-member-name">Денисова Дарья</div>
-                        <div class="team-member-role">Исследователь</div>
-                    </div>
-                    <div class="team-member">
-                        <div class="team-member-avatar">ЗИ</div>
-                        <div class="team-member-name">Золин Иван</div>
-                        <div class="team-member-role">Разработчик</div>
-                    </div>
-                    <div class="team-member">
-                        <div class="team-member-avatar">СВ</div>
-                        <div class="team-member-name">Скворцов Владимир</div>
-                        <div class="team-member-role">Разработчик</div>
-                    </div>
-                    <div class="team-member">
-                        <div class="team-member-avatar">ФА</div>
-                        <div class="team-member-name">Файзрахманов Артур</div>
-                        <div class="team-member-role">Разработчик</div>
+            <div class="slide-team-layout">
+                <div class="team-column">
+                    <h3>👥 Команда</h3>
+                    <div class="team-list">
+                        <div class="team-member">
+                            <div class="team-member-avatar">АА</div>
+                            <div class="team-member-info">
+                                <span class="team-member-name">Андрейченко Анна</span>
+                                <span class="team-member-role">PhD, к.ф.-м.н.</span>
+                            </div>
+                        </div>
+                        <div class="team-member">
+                            <div class="team-member-avatar">ЧВ</div>
+                            <div class="team-member-info">
+                                <span class="team-member-name">Чуканов Вячеслав</span>
+                                <span class="team-member-role">к.ф.-м.н.</span>
+                            </div>
+                        </div>
+                        <div class="team-member">
+                            <div class="team-member-avatar">ДД</div>
+                            <div class="team-member-info">
+                                <span class="team-member-name">Денисова Дарья</span>
+                                <span class="team-member-role">Исследователь</span>
+                            </div>
+                        </div>
+                        <div class="team-member">
+                            <div class="team-member-avatar">ЗИ</div>
+                            <div class="team-member-info">
+                                <span class="team-member-name">Золин Иван</span>
+                                <span class="team-member-role">Разработчик</span>
+                            </div>
+                        </div>
+                        <div class="team-member">
+                            <div class="team-member-avatar">СВ</div>
+                            <div class="team-member-info">
+                                <span class="team-member-name">Скворцов Владимир</span>
+                                <span class="team-member-role">Разработчик</span>
+                            </div>
+                        </div>
+                        <div class="team-member">
+                            <div class="team-member-avatar">ФА</div>
+                            <div class="team-member-info">
+                                <span class="team-member-name">Файзрахманов Артур</span>
+                                <span class="team-member-role">Разработчик</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="team-section">
-                <h3>🤝 Партнёры</h3>
-                <div class="partners-list">
-                    <div class="partner-tag">Негосударственные клиники</div>
-                    <div class="partner-tag">НМИЦ</div>
+                <div class="center-column">
+                    <div class="contact-label">DPHT ITMO</div>
+                    <div class="qr-placeholder">
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://dpht.itmo.ru" alt="QR Code dpht.itmo.ru" width="160" height="160" style="border-radius: 4px;" />
+                    </div>
+                    <div class="cta-text">Спасибо за внимание!</div>
                 </div>
-            </div>
 
-            <div class="team-section" style="text-align: center;">
-                <div class="contact-info" style="font-size: 1.3rem; font-weight: 600; margin-bottom: 1rem;">DPHT ITMO</div>
-                <div class="qr-placeholder">
-                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://dpht.itmo.ru" alt="QR Code dpht.itmo.ru" width="180" height="180" style="border-radius: 4px;" />
+                <div class="partners-column">
+                    <h3>🤝 Партнёры</h3>
+                    <div class="partners-list">
+                        <div class="partner-tag">Негосударственные клиники</div>
+                        <div class="partner-tag">НМИЦ</div>
+                    </div>
                 </div>
-                <div class="cta-text">Спасибо за внимание!</div>
             </div>
         </div>
     </section>
