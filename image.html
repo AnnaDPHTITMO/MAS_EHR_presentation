@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAS-EHR - Мульти-агент для структурирования данных о здоровье</title>
+
+    <!-- ITMO DPHT Font Stack -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* DPHT ITMO Brand Colors — Dark Theme */
+            --primary-dark: #121313;
+            --primary-blue: #0566f6;
+            --accent-green: #97ef41;
+            --dark-bg: #121313;
+            --dark-card: #1a1d1e;
+            --light-bg: #181a1b;
+            --text-dark: #ffffff;
+            --text-light: #ffffff;
+            --text-muted: #a0a0a0;
+
+            /* Typography */
+            --font-heading: 'Unbounded', Arial, sans-serif;
+            --font-body: 'Roboto', Arial, sans-serif;
+        }
+
+        body {
+            font-family: var(--font-body);
+            line-height: 1.6;
+            color: var(--text-light);
+            overflow-x: hidden;
+            background: var(--primary-dark);
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .slide {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 4rem 2rem;
+            position: relative;
+            scroll-snap-align: start;
+        }
+
+        .slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--accent-green);
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        /* Slide 1: Title */
+        .slide-title {
+            background: var(--primary-dark);
+            color: var(--text-light);
+            text-align: center;
+        }
+
+        .logo-container {
+            margin-bottom: 3rem;
+        }
+
+        .logo-itmo {
+            height: 60px;
+        }
+
+        .main-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+            color: var(--accent-green);
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            font-weight: 400;
+            opacity: 0.95;
+            margin-bottom: 3rem;
+        }
+
+        .project-code {
+            font-family: var(--font-body);
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: var(--primary-blue);
+            letter-spacing: 0.05em;
+        }
+
+        /* Slide 2: Problem Statement */
+        .slide-problem {
+            background: var(--primary-dark);
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--accent-green);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .problem-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .problem-card {
+            background: var(--dark-card);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            border-left: 4px solid var(--accent-green);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .problem-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(151, 239, 65, 0.1);
+        }
+
+        .problem-card h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--primary-blue);
+            margin-bottom: 1rem;
+        }
+
+        .problem-card p {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: var(--text-muted);
+        }
+
+        .stat-highlight {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--accent-green);
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Slide 3: Architecture */
+        .slide-architecture {
+            background: var(--primary-dark);
+        }
+
+        .architecture-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: start;
+        }
+
+        .architecture-list {
+            list-style: none;
+        }
+
+        .architecture-list li {
+            padding: 1.2rem 1.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, rgba(151, 239, 65, 0.05), rgba(5, 102, 246, 0.05));
+            border-radius: 8px;
+            border-left: 3px solid var(--accent-green);
+            font-size: 1.05rem;
+            font-weight: 500;
+            color: var(--text-light);
+            transition: all 0.3s ease;
+        }
+
+        .architecture-list li:hover {
+            background: linear-gradient(135deg, rgba(151, 239, 65, 0.1), rgba(5, 102, 246, 0.1));
+            transform: translateX(8px);
+        }
+
+        .architecture-image-container {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 400px;
+        }
+
+        .architecture-image {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 4px;
+        }
+
+        /* Slide 4: Performance Metrics */
+        .slide-metrics {
+            background: var(--primary-dark);
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .metric-card {
+            background: var(--dark-card);
+            padding: 2.5rem;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            border: 1px solid rgba(151, 239, 65, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 24px rgba(151, 239, 65, 0.1);
+        }
+
+        .metric-value {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--accent-green);
+            display: block;
+            margin-bottom: 0.5rem;
+            font-family: var(--font-heading);
+        }
+
+        .metric-label {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--primary-blue);
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-description {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        /* Slide 5: Technologies */
+        .slide-tech {
+            background: var(--primary-dark);
+        }
+
+        .tech-categories {
+            display: grid;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .tech-category {
+            background: var(--dark-card);
+            padding: 2rem;
+            border-radius: 12px;
+            border-left: 4px solid var(--accent-green);
+        }
+
+        .tech-category h3 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--accent-green);
+            margin-bottom: 1rem;
+        }
+
+        .tech-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+        }
+
+        .tech-tag {
+            background: transparent;
+            padding: 0.6rem 1.2rem;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-light);
+            border: 2px solid var(--primary-blue);
+            transition: all 0.3s ease;
+        }
+
+        .tech-tag:hover {
+            background: var(--accent-green);
+            color: var(--primary-dark);
+            border-color: var(--accent-green);
+            transform: scale(1.05);
+        }
+
+        /* Slide 6: Advantages */
+        .slide-advantages {
+            background: var(--dark-card);
+            color: var(--text-light);
+        }
+
+        .advantages-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .advantage-card {
+            background: rgba(5, 102, 246, 0.08);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid rgba(151, 239, 65, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        .advantage-card:hover {
+            background: rgba(5, 102, 246, 0.12);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(151, 239, 65, 0.08);
+        }
+
+        .advantage-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .advantage-card h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+        }
+
+        .advantage-card p {
+            font-size: 1rem;
+            line-height: 1.7;
+            opacity: 0.95;
+        }
+
+        /* Slide 7: Team & Partners */
+        .slide-team {
+            background: var(--primary-dark);
+        }
+
+        .team-section {
+            margin-top: 3rem;
+        }
+
+        .team-section h3 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--accent-green);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .team-member {
+            background: var(--dark-card);
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: all 0.3s ease;
+        }
+
+        .team-member:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(151, 239, 65, 0.1);
+        }
+
+        .team-member-avatar {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-blue), var(--accent-green));
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: var(--primary-dark);
+            font-weight: 700;
+            font-family: var(--font-heading);
+            overflow: hidden;
+        }
+
+        .team-member-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .team-member-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+            margin-bottom: 0.3rem;
+        }
+
+        .team-member-role {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .partners-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            justify-content: center;
+        }
+
+        .partner-tag {
+            background: transparent;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--accent-green);
+            border: 2px solid var(--accent-green);
+        }
+
+        .contact-info {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 2rem 0;
+        }
+
+        .qr-placeholder {
+            width: 200px;
+            height: 200px;
+            background: white;
+            margin: 2rem auto;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-dark);
+            font-weight: 700;
+        }
+
+        .cta-text {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-top: 2rem;
+            color: var(--accent-green);
+        }
+
+        /* Navigation */
+        .navigation {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            display: flex;
+            gap: 1rem;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            background: var(--primary-blue);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            font-family: var(--font-heading);
+            font-weight: 700;
+        }
+
+        .nav-btn:hover {
+            background: var(--accent-green);
+            color: var(--primary-dark);
+            transform: scale(1.1);
+        }
+
+        .slide-indicator {
+            position: fixed;
+            top: 50%;
+            right: 1rem;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            z-index: 1000;
+        }
+
+        .indicator-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(151, 239, 65, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .indicator-dot.active {
+            background: var(--accent-green);
+            transform: scale(1.3);
+        }
+
+        /* Decorative accents */
+        .slide-title .container::after {
+            content: '';
+            display: block;
+            width: 120px;
+            height: 2px;
+            background: var(--accent-green);
+            margin: 3rem auto 0;
+        }
+
+        .slide-problem::after,
+        .slide-tech::after {
+            content: '';
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--accent-green);
+            opacity: 0.5;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-title {
+                font-size: 2rem;
+            }
+
+            .subtitle {
+                font-size: 1.1rem;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+            }
+
+            .architecture-content {
+                grid-template-columns: 1fr;
+            }
+
+            .navigation {
+                bottom: 1rem;
+                right: 1rem;
+            }
+
+            .nav-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+            }
+
+            .slide {
+                padding: 3rem 1.5rem;
+            }
+
+            .architecture-image-container {
+                min-height: auto;
+                padding: 1rem;
+            }
+        }
+
+        /* Smooth scrolling & snap */
+        html {
+            scroll-behavior: smooth;
+            scroll-snap-type: y proximity;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Slide 1: Title -->
+    <section class="slide slide-title" id="slide1">
+        <div class="container">
+            <div class="logo-container">
+                <div class="logo-itmo" style="font-size: 2rem; font-weight: 800; letter-spacing: 0.1em;">ИТМО</div>
+            </div>
+            <h1 class="main-title">MAS-EHR</h1>
+            <p class="subtitle">Мульти-агент для структурирования информации и данных о здоровье</p>
+            <p class="project-code">DPHT ITMO</p>
+        </div>
+    </section>
+
+    <!-- Slide 2: Problem Statement -->
+    <section class="slide slide-problem" id="slide2">
+        <div class="container">
+            <h2 class="section-title">Актуальность проблемы</h2>
+            <p style="text-align: center; font-size: 1.2rem; margin-bottom: 2rem; color: var(--text-dark); max-width: 900px; margin-left: auto; margin-right: auto;">
+                Качество, полнота и интероперабельность данных - основной барьер эффективного использования ИИ в клинической практике и проведения RWE исследований
+            </p>
+            <div class="problem-grid">
+                <div class="problem-card">
+                    <span class="stat-highlight">80%</span>
+                    <h3>Неструктурированность</h3>
+                    <p>медицинских данных не имеют структурированного формата</p>
+                </div>
+                <div class="problem-card">
+                    <h3>🔀 Фрагментированность</h3>
+                    <p>Разнородность форматов хранения: тексты, таблицы, PDF, сканы, рукописные записи</p>
+                </div>
+                <div class="problem-card">
+                    <h3>📋 Отсутствие стандартов</h3>
+                    <p>Нет единых стандартов представления данных и кодирования информации</p>
+                </div>
+                <div class="problem-card">
+                    <h3>🔒 Деперсонализация</h3>
+                    <p>Отсутствие универсальных инструментов деперсонализации медицинских данных</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 3: Architecture -->
+    <section class="slide slide-architecture" id="slide3">
+        <div class="container">
+            <h2 class="section-title">Архитектура системы</h2>
+            <div class="architecture-content">
+                <div>
+                    <h3 style="color: var(--accent-green); font-size: 1.5rem; margin-bottom: 1.5rem;">Компоненты MAS-EHR:</h3>
+                    <ul class="architecture-list">
+                        <li>📄 Парсинг медицинских документов</li>
+                        <li>👁️ OCR-распознавание текста</li>
+                        <li>🔐 Детекция персональных данных</li>
+                        <li>📊 Структуризация информации</li>
+                        <li>✅ Валидация результатов</li>
+                        <li>⚡ Chunking и асинхронная обработка</li>
+                    </ul>
+                </div>
+                <div class="architecture-image-container">
+                    <img src="images/mas-ehr_architecture.png"
+                         alt="Архитектура MAS-EHR: Пользователь → Qt интерфейс → EHR → Оркестратор → Агент чтения файлов → OCR → Анонимизатор → Агент структуризации → Агент валидации"
+                         class="architecture-image" />
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 4: Performance Metrics -->
+    <section class="slide slide-metrics" id="slide4">
+        <div class="container">
+            <h2 class="section-title">Метрики производительности</h2>
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <span class="metric-value">0.89</span>
+                    <span class="metric-label">Precision</span>
+                    <span class="metric-description">Анонимизация</span>
+                </div>
+                <div class="metric-card">
+                    <span class="metric-value">0.86</span>
+                    <span class="metric-label">Recall</span>
+                    <span class="metric-description">Анонимизация</span>
+                </div>
+                <div class="metric-card">
+                    <span class="metric-value">0.83</span>
+                    <span class="metric-label">F1-Score</span>
+                    <span class="metric-description">Анонимизация</span>
+                </div>
+                <div class="metric-card">
+                    <span class="metric-value">~95%</span>
+                    <span class="metric-label">Схожесть</span>
+                    <span class="metric-description">OCR (Qwen3-VL 8B)</span>
+                </div>
+                <div class="metric-card">
+                    <span class="metric-value">~75%</span>
+                    <span class="metric-label">Точность</span>
+                    <span class="metric-description">Точное совпадение OCR</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 5: Technologies -->
+    <section class="slide slide-tech" id="slide5">
+        <div class="container">
+            <h2 class="section-title">Технологии</h2>
+            <div class="tech-categories">
+                <div class="tech-category">
+                    <h3>🛠️ Общие инструменты</h3>
+                    <div class="tech-tags">
+                        <span class="tech-tag">LangChain</span>
+                        <span class="tech-tag">Ollama</span>
+                        <span class="tech-tag">Transformers</span>
+                        <span class="tech-tag">Faker</span>
+                        <span class="tech-tag">Docker + CI/CD</span>
+                        <span class="tech-tag">FastAPI</span>
+                        <span class="tech-tag">PyQT</span>
+                    </div>
+                </div>
+                <div class="tech-category">
+                    <h3>👁️ OCR</h3>
+                    <div class="tech-tags">
+                        <span class="tech-tag">Qwen 3-VL 8B</span>
+                        <span class="tech-tag">Gemma 4B</span>
+                    </div>
+                </div>
+                <div class="tech-category">
+                    <h3>🔐 Анонимизация</h3>
+                    <div class="tech-tags">
+                        <span class="tech-tag">DeepSeek R1 14B</span>
+                        <span class="tech-tag">natasha</span>
+                        <span class="tech-tag">spaCy</span>
+                        <span class="tech-tag">stanza</span>
+                    </div>
+                </div>
+                <div class="tech-category">
+                    <h3>📊 Структуризация</h3>
+                    <div class="tech-tags">
+                        <span class="tech-tag">Gemma 4B + промптинг</span>
+                        <span class="tech-tag">SNOMED</span>
+                        <span class="tech-tag">FHIR</span>
+                        <span class="tech-tag">ICD-10</span>
+                    </div>
+                </div>
+                <div class="tech-category">
+                    <h3>✅ Валидация</h3>
+                    <div class="tech-tags">
+                        <span class="tech-tag">Mistral 7B + промптинг</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 6: Advantages -->
+    <section class="slide slide-advantages" id="slide6">
+        <div class="container">
+            <h2 class="section-title">Наши преимущества</h2>
+            <div class="advantages-grid">
+                <div class="advantage-card">
+                    <div class="advantage-icon">⚡</div>
+                    <h3>Масштабируемость решения</h3>
+                    <p>Система спроектирована для обработки больших объёмов медицинских данных</p>
+                </div>
+                <div class="advantage-card">
+                    <div class="advantage-icon">🌐</div>
+                    <h3>Международные стандарты</h3>
+                    <p>Кодирование, хранение и обмен данными по стандартам SNOMED, FHIR, ICD-10</p>
+                </div>
+                <div class="advantage-card">
+                    <div class="advantage-icon">🔓</div>
+                    <h3>Opensource</h3>
+                    <p>Открытый исходный код для прозрачности и развития сообщества</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide 7: Team, Partners & Contact -->
+    <section class="slide slide-team" id="slide7">
+        <div class="container">
+            <h2 class="section-title">Команда и контакты</h2>
+
+            <div class="team-section">
+                <h3>👥 Команда</h3>
+                <div class="team-grid">
+                    <div class="team-member">
+                        <div class="team-member-avatar">АА</div>
+                        <div class="team-member-name">Андрейченко Анна</div>
+                        <div class="team-member-role">PhD, к.ф.-м.н.</div>
+                    </div>
+                    <div class="team-member">
+                        <div class="team-member-avatar">ЧВ</div>
+                        <div class="team-member-name">Чуканов Вячеслав</div>
+                        <div class="team-member-role">к.ф.-м.н.</div>
+                    </div>
+                    <div class="team-member">
+                        <div class="team-member-avatar">ДД</div>
+                        <div class="team-member-name">Денисова Дарья</div>
+                        <div class="team-member-role">Исследователь</div>
+                    </div>
+                    <div class="team-member">
+                        <div class="team-member-avatar">ЗИ</div>
+                        <div class="team-member-name">Золин Иван</div>
+                        <div class="team-member-role">Разработчик</div>
+                    </div>
+                    <div class="team-member">
+                        <div class="team-member-avatar">СВ</div>
+                        <div class="team-member-name">Скворцов Владимир</div>
+                        <div class="team-member-role">Разработчик</div>
+                    </div>
+                    <div class="team-member">
+                        <div class="team-member-avatar">ФА</div>
+                        <div class="team-member-name">Файзрахманов Артур</div>
+                        <div class="team-member-role">Разработчик</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="team-section">
+                <h3>🤝 Партнёры</h3>
+                <div class="partners-list">
+                    <div class="partner-tag">Негосударственные клиники</div>
+                    <div class="partner-tag">НМИЦ</div>
+                </div>
+            </div>
+
+            <div class="team-section" style="text-align: center;">
+                <div class="contact-info" style="font-size: 1.3rem; font-weight: 600; margin-bottom: 1rem;">DPHT ITMO</div>
+                <div class="qr-placeholder">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://dpht.itmo.ru" alt="QR Code dpht.itmo.ru" width="180" height="180" style="border-radius: 4px;" />
+                </div>
+                <div class="cta-text">Спасибо за внимание!</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Navigation -->
+    <div class="navigation">
+        <button class="nav-btn" onclick="previousSlide()">←</button>
+        <button class="nav-btn" onclick="nextSlide()">→</button>
+    </div>
+
+    <!-- Slide Indicator -->
+    <div class="slide-indicator">
+        <div class="indicator-dot active" onclick="goToSlide(1)"></div>
+        <div class="indicator-dot" onclick="goToSlide(2)"></div>
+        <div class="indicator-dot" onclick="goToSlide(3)"></div>
+        <div class="indicator-dot" onclick="goToSlide(4)"></div>
+        <div class="indicator-dot" onclick="goToSlide(5)"></div>
+        <div class="indicator-dot" onclick="goToSlide(6)"></div>
+        <div class="indicator-dot" onclick="goToSlide(7)"></div>
+    </div>
+
+    <script>
+        let currentSlide = 1;
+        const totalSlides = 7;
+
+        function updateSlideIndicator() {
+            document.querySelectorAll('.indicator-dot').forEach((dot, index) => {
+                dot.classList.toggle('active', index + 1 === currentSlide);
+            });
+        }
+
+        function goToSlide(slideNumber) {
+            currentSlide = slideNumber;
+            document.getElementById(`slide${slideNumber}`).scrollIntoView({ behavior: 'smooth' });
+            updateSlideIndicator();
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides) {
+                currentSlide++;
+                goToSlide(currentSlide);
+            }
+        }
+
+        function previousSlide() {
+            if (currentSlide > 1) {
+                currentSlide--;
+                goToSlide(currentSlide);
+            }
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                nextSlide();
+            } else if (e.key === 'ArrowLeft') {
+                previousSlide();
+            }
+        });
+
+        // Update indicator on scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const slideId = entry.target.id;
+                    currentSlide = parseInt(slideId.replace('slide', ''));
+                    updateSlideIndicator();
+                }
+            });
+        }, { threshold: 0.5 });
+
+        document.querySelectorAll('.slide').forEach(slide => {
+            observer.observe(slide);
+        });
+    </script>
+
+</body>
+</html>
