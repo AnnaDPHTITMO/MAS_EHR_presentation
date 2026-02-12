@@ -9,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="https://dpht.itmo.ru/favicon.ico" type="image/x-icon">
 
     <style>
         * {
@@ -18,16 +19,16 @@
         }
 
         :root {
-            /* DPHT ITMO Brand Colors — Dark Theme */
-            --primary-dark: #121313;
+            /* DPHT ITMO Brand Colors — Dark Blue Theme */
+            --primary-dark: #0a1628;
             --primary-blue: #0566f6;
             --accent-green: #97ef41;
-            --dark-bg: #121313;
-            --dark-card: #1a1d1e;
-            --light-bg: #181a1b;
+            --dark-bg: #0a1628;
+            --dark-card: #111d33;
+            --light-bg: #0e1a2e;
             --text-dark: #ffffff;
             --text-light: #ffffff;
-            --text-muted: #a0a0a0;
+            --text-muted: #8a9bb5;
 
             /* Typography */
             --font-heading: 'Unbounded', Arial, sans-serif;
@@ -56,7 +57,6 @@
             align-items: center;
             padding: 4rem 2rem;
             position: relative;
-            scroll-snap-align: start;
         }
 
         .slide::before {
@@ -453,6 +453,7 @@
             align-items: center;
             justify-content: center;
             text-align: center;
+            position: relative;
         }
 
         .qr-placeholder {
@@ -570,7 +571,52 @@
             margin: 3rem auto 0;
         }
 
-        .slide-problem::after,
+        /* Decorative circles */
+        .slide-title::after {
+            content: '';
+            position: absolute;
+            top: 10%;
+            right: 5%;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 2px solid rgba(151, 239, 65, 0.15);
+        }
+
+        .slide-problem::after {
+            content: '';
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--accent-green);
+            opacity: 0.5;
+        }
+
+        .slide-architecture::after {
+            content: '';
+            position: absolute;
+            bottom: 8%;
+            left: 3%;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: rgba(5, 102, 246, 0.08);
+        }
+
+        .slide-metrics::after {
+            content: '';
+            position: absolute;
+            top: 15%;
+            right: 8%;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: rgba(151, 239, 65, 0.06);
+        }
+
         .slide-tech::after {
             content: '';
             position: absolute;
@@ -581,6 +627,37 @@
             border-radius: 50%;
             background: var(--accent-green);
             opacity: 0.5;
+        }
+
+        /* Diagonal accent line on title */
+        .slide-title::before {
+            content: '';
+            position: absolute;
+            top: 20%;
+            left: -5%;
+            width: 200px;
+            height: 2px;
+            background: var(--accent-green);
+            transform: rotate(-35deg);
+            opacity: 0.3;
+        }
+
+        /* Subtle dot grid */
+        .slide-problem,
+        .slide-tech {
+            background-image: radial-gradient(rgba(151, 239, 65, 0.04) 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+
+        /* Glow behind QR code */
+        .center-column::before {
+            content: '';
+            position: absolute;
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(5, 102, 246, 0.12), transparent 70%);
+            z-index: -1;
         }
 
         /* Responsive */
@@ -630,10 +707,9 @@
             }
         }
 
-        /* Smooth scrolling & snap */
-        html {
-            scroll-behavior: smooth;
-            scroll-snap-type: y proximity;
+        html, body {
+            height: 100vh;
+            overflow: hidden;
         }
     </style>
 </head>
@@ -641,6 +717,7 @@
 
     <!-- Slide 1: Title -->
     <section class="slide slide-title" id="slide1">
+        <svg style="position:absolute;bottom:5%;right:0;width:400px;height:200px;opacity:0.2;pointer-events:none"><path d="M0,150 Q100,0 200,100 T400,50" stroke="#97ef41" stroke-width="2" fill="none"/></svg>
         <div class="container">
             <div class="logo-container">
                 <div class="logo-itmo" style="font-size: 2rem; font-weight: 800; letter-spacing: 0.1em;">ИТМО</div>
@@ -682,6 +759,7 @@
 
     <!-- Slide 3: Architecture -->
     <section class="slide slide-architecture" id="slide3">
+        <svg style="position:absolute;top:10%;right:0;width:300px;height:300px;opacity:0.12;pointer-events:none"><path d="M300,0 Q200,150 300,300" stroke="#0566f6" stroke-width="2" fill="none"/></svg>
         <div class="container">
             <h2 class="section-title">Архитектура системы</h2>
             <div class="architecture-content">
@@ -707,6 +785,7 @@
 
     <!-- Slide 4: Performance Metrics -->
     <section class="slide slide-metrics" id="slide4">
+        <svg style="position:absolute;top:0;left:0;width:250px;height:200px;opacity:0.15;pointer-events:none"><path d="M0,200 Q125,0 250,100" stroke="#97ef41" stroke-width="2" fill="none"/></svg>
         <div class="container">
             <h2 class="section-title">Метрики производительности</h2>
             <div class="metrics-grid">
@@ -817,6 +896,7 @@
 
     <!-- Slide 7: Team, Partners & Contact -->
     <section class="slide slide-team" id="slide7">
+        <svg style="position:absolute;bottom:10%;left:0;width:350px;height:150px;opacity:0.12;pointer-events:none"><path d="M0,75 Q175,0 350,75" stroke="#0566f6" stroke-width="2" fill="none"/></svg>
         <div class="container">
             <h2 class="section-title">Команда и контакты</h2>
 
@@ -824,27 +904,6 @@
                 <div class="team-column">
                     <h3>👥 Команда</h3>
                     <div class="team-list">
-                        <div class="team-member">
-                            <div class="team-member-avatar">АА</div>
-                            <div class="team-member-info">
-                                <span class="team-member-name">Андрейченко Анна</span>
-                                <span class="team-member-role">PhD, к.ф.-м.н.</span>
-                            </div>
-                        </div>
-                        <div class="team-member">
-                            <div class="team-member-avatar">ЧВ</div>
-                            <div class="team-member-info">
-                                <span class="team-member-name">Чуканов Вячеслав</span>
-                                <span class="team-member-role">к.ф.-м.н.</span>
-                            </div>
-                        </div>
-                        <div class="team-member">
-                            <div class="team-member-avatar">ДД</div>
-                            <div class="team-member-info">
-                                <span class="team-member-name">Денисова Дарья</span>
-                                <span class="team-member-role">Исследователь</span>
-                            </div>
-                        </div>
                         <div class="team-member">
                             <div class="team-member-avatar">ЗИ</div>
                             <div class="team-member-info">
@@ -864,6 +923,27 @@
                             <div class="team-member-info">
                                 <span class="team-member-name">Файзрахманов Артур</span>
                                 <span class="team-member-role">Разработчик</span>
+                            </div>
+                        </div>
+                        <div class="team-member">
+                            <div class="team-member-avatar">ЧВ</div>
+                            <div class="team-member-info">
+                                <span class="team-member-name">Чуканов Вячеслав</span>
+                                <span class="team-member-role">к.ф.-м.н.</span>
+                            </div>
+                        </div>
+                        <div class="team-member">
+                            <div class="team-member-avatar">АА</div>
+                            <div class="team-member-info">
+                                <span class="team-member-name">Андрейченко Анна</span>
+                                <span class="team-member-role">PhD, к.ф.-м.н.</span>
+                            </div>
+                        </div>
+                        <div class="team-member">
+                            <div class="team-member-avatar">ДД</div>
+                            <div class="team-member-info">
+                                <span class="team-member-name">Денисова Дарья</span>
+                                <span class="team-member-role">Исследователь</span>
                             </div>
                         </div>
                     </div>
@@ -908,6 +988,8 @@
     <script>
         let currentSlide = 1;
         const totalSlides = 7;
+        let isScrolling = false;
+        const scrollCooldown = 800;
 
         function updateSlideIndicator() {
             document.querySelectorAll('.indicator-dot').forEach((dot, index) => {
@@ -916,48 +998,63 @@
         }
 
         function goToSlide(slideNumber) {
+            if (slideNumber < 1 || slideNumber > totalSlides) return;
+            if (isScrolling && slideNumber !== currentSlide) {
+                isScrolling = true;
+            }
             currentSlide = slideNumber;
+            isScrolling = true;
             document.getElementById(`slide${slideNumber}`).scrollIntoView({ behavior: 'smooth' });
             updateSlideIndicator();
+            setTimeout(() => { isScrolling = false; }, scrollCooldown);
         }
 
         function nextSlide() {
-            if (currentSlide < totalSlides) {
-                currentSlide++;
-                goToSlide(currentSlide);
+            if (!isScrolling && currentSlide < totalSlides) {
+                goToSlide(currentSlide + 1);
             }
         }
 
         function previousSlide() {
-            if (currentSlide > 1) {
-                currentSlide--;
-                goToSlide(currentSlide);
+            if (!isScrolling && currentSlide > 1) {
+                goToSlide(currentSlide - 1);
             }
         }
 
         // Keyboard navigation
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowRight' || e.key === ' ') {
+            if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') {
+                e.preventDefault();
                 nextSlide();
-            } else if (e.key === 'ArrowLeft') {
+            } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+                e.preventDefault();
                 previousSlide();
             }
         });
 
-        // Update indicator on scroll
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const slideId = entry.target.id;
-                    currentSlide = parseInt(slideId.replace('slide', ''));
-                    updateSlideIndicator();
-                }
-            });
-        }, { threshold: 0.5 });
+        // Mouse wheel navigation
+        document.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            if (e.deltaY > 0) {
+                nextSlide();
+            } else if (e.deltaY < 0) {
+                previousSlide();
+            }
+        }, { passive: false });
 
-        document.querySelectorAll('.slide').forEach(slide => {
-            observer.observe(slide);
-        });
+        // Touch navigation
+        let touchStartY = 0;
+        document.addEventListener('touchstart', (e) => {
+            touchStartY = e.touches[0].clientY;
+        }, { passive: true });
+
+        document.addEventListener('touchend', (e) => {
+            const deltaY = touchStartY - e.changedTouches[0].clientY;
+            if (Math.abs(deltaY) > 50) {
+                if (deltaY > 0) nextSlide();
+                else previousSlide();
+            }
+        }, { passive: true });
     </script>
 
 </body>
