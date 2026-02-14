@@ -575,77 +575,86 @@
         .slide-title::after {
             content: '';
             position: absolute;
-            top: 10%;
-            right: 5%;
-            width: 120px;
-            height: 120px;
+            top: 8%;
+            right: 4%;
+            width: 180px;
+            height: 180px;
             border-radius: 50%;
-            border: 2px solid rgba(151, 239, 65, 0.15);
+            border: 2px solid rgba(151, 239, 65, 0.3);
         }
 
         .slide-problem::after {
             content: '';
             position: absolute;
-            top: 2rem;
-            left: 2rem;
-            width: 12px;
-            height: 12px;
+            bottom: 10%;
+            right: 5%;
+            width: 100px;
+            height: 100px;
             border-radius: 50%;
-            background: var(--accent-green);
-            opacity: 0.5;
+            border: 2px solid rgba(5, 102, 246, 0.25);
         }
 
         .slide-architecture::after {
             content: '';
             position: absolute;
-            bottom: 8%;
+            bottom: 6%;
             left: 3%;
-            width: 80px;
-            height: 80px;
+            width: 140px;
+            height: 140px;
             border-radius: 50%;
-            background: rgba(5, 102, 246, 0.08);
+            background: rgba(5, 102, 246, 0.12);
         }
 
         .slide-metrics::after {
             content: '';
             position: absolute;
-            top: 15%;
-            right: 8%;
-            width: 60px;
-            height: 60px;
+            top: 12%;
+            right: 6%;
+            width: 100px;
+            height: 100px;
             border-radius: 50%;
-            background: rgba(151, 239, 65, 0.06);
+            background: rgba(151, 239, 65, 0.1);
         }
 
         .slide-tech::after {
             content: '';
             position: absolute;
-            top: 2rem;
-            left: 2rem;
-            width: 12px;
-            height: 12px;
+            bottom: 8%;
+            left: 4%;
+            width: 90px;
+            height: 90px;
             border-radius: 50%;
-            background: var(--accent-green);
-            opacity: 0.5;
+            border: 2px solid rgba(151, 239, 65, 0.2);
+        }
+
+        .slide-advantages::after {
+            content: '';
+            position: absolute;
+            top: 10%;
+            right: 3%;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: rgba(5, 102, 246, 0.1);
         }
 
         /* Diagonal accent line on title */
         .slide-title::before {
             content: '';
             position: absolute;
-            top: 20%;
-            left: -5%;
-            width: 200px;
+            top: 18%;
+            left: -3%;
+            width: 300px;
             height: 2px;
             background: var(--accent-green);
             transform: rotate(-35deg);
-            opacity: 0.3;
+            opacity: 0.35;
         }
 
         /* Subtle dot grid */
         .slide-problem,
         .slide-tech {
-            background-image: radial-gradient(rgba(151, 239, 65, 0.04) 1px, transparent 1px);
+            background-image: radial-gradient(rgba(151, 239, 65, 0.06) 1px, transparent 1px);
             background-size: 30px 30px;
         }
 
@@ -653,31 +662,144 @@
         .center-column::before {
             content: '';
             position: absolute;
-            width: 250px;
-            height: 250px;
+            width: 320px;
+            height: 320px;
             border-radius: 50%;
-            background: radial-gradient(circle, rgba(5, 102, 246, 0.12), transparent 70%);
+            background: radial-gradient(circle, rgba(5, 102, 246, 0.18), transparent 70%);
             z-index: -1;
         }
 
-        /* Responsive */
+        /* Responsive — Tablet */
         @media (max-width: 768px) {
+            .slide {
+                padding: 2.5rem 3.5rem 2.5rem 1.5rem;
+            }
+
             .main-title {
-                font-size: 2rem;
+                font-size: 2.2rem;
             }
 
             .subtitle {
                 font-size: 1.1rem;
+                margin-bottom: 2rem;
+            }
+
+            .logo-container {
+                margin-bottom: 2rem;
             }
 
             .section-title {
                 font-size: 1.8rem;
+                margin-bottom: 1.5rem;
             }
 
+            /* Problem grid: 2 columns on tablet */
+            .problem-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+            }
+
+            .problem-card {
+                padding: 1rem;
+                overflow: hidden;
+            }
+
+            .problem-card h3 {
+                font-size: 1rem;
+            }
+
+            .problem-card p {
+                font-size: 0.85rem;
+                overflow-wrap: break-word;
+            }
+
+            .stat-highlight {
+                font-size: 2rem;
+            }
+
+            /* Architecture: stack */
             .architecture-content {
                 grid-template-columns: 1fr;
+                gap: 1.5rem;
             }
 
+            .architecture-image-container {
+                min-height: auto;
+                padding: 1rem;
+            }
+
+            .architecture-list li {
+                padding: 0.8rem 1rem;
+                font-size: 0.95rem;
+            }
+
+            /* Metrics */
+            .metrics-grid {
+                grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+                gap: 1rem;
+            }
+
+            .metric-card {
+                padding: 1.5rem 1rem;
+            }
+
+            .metric-value {
+                font-size: 2.2rem;
+            }
+
+            /* Tech */
+            .tech-category {
+                padding: 1.2rem;
+            }
+
+            .tech-category h3 {
+                font-size: 1.2rem;
+            }
+
+            .tech-tag {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.85rem;
+            }
+
+            /* Advantages */
+            .advantages-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .advantage-card {
+                padding: 1.2rem;
+            }
+
+            .advantage-icon {
+                font-size: 2rem;
+            }
+
+            /* Team: stack to single column */
+            .slide-team-layout {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .center-column {
+                order: -1;
+            }
+
+            .qr-placeholder {
+                width: 150px;
+                height: 150px;
+            }
+
+            .qr-placeholder img {
+                width: 130px;
+                height: 130px;
+            }
+
+            .cta-text {
+                font-size: 1.2rem;
+            }
+
+            /* Navigation */
             .navigation {
                 bottom: 1rem;
                 right: 1rem;
@@ -689,21 +811,257 @@
                 font-size: 1.2rem;
             }
 
+            .slide-indicator {
+                right: 0.5rem;
+                gap: 0.5rem;
+            }
+
+            .indicator-dot {
+                width: 8px;
+                height: 8px;
+            }
+
+            /* Hide decorative SVGs on tablet */
+            .slide svg[style*="position:absolute"] {
+                display: none;
+            }
+        }
+
+        /* Responsive — Phone */
+        @media (max-width: 480px) {
             .slide {
-                padding: 3rem 1.5rem;
+                padding: 1.5rem 1.8rem 1.5rem 1rem;
+            }
+
+            .main-title {
+                font-size: 1.8rem;
+            }
+
+            .subtitle {
+                font-size: 0.95rem;
+                margin-bottom: 1rem;
+            }
+
+            .logo-container {
+                margin-bottom: 1rem;
+            }
+
+            .section-title {
+                font-size: 1.3rem;
+                margin-bottom: 0.8rem;
+            }
+
+            /* Problem: stacked single column */
+            .slide-problem .container > p {
+                font-size: 0.85rem !important;
+                margin-bottom: 0.5rem !important;
+            }
+
+            .problem-grid {
+                grid-template-columns: 1fr;
+                gap: 0.4rem;
+                margin-top: 0.5rem;
+            }
+
+            .problem-card {
+                padding: 0.5rem 0.7rem;
+                display: block;
+            }
+
+            .problem-card h3 {
+                font-size: 0.8rem;
+                margin-bottom: 0.15rem;
+            }
+
+            .problem-card p {
+                font-size: 0.65rem;
+                line-height: 1.3;
+            }
+
+            .stat-highlight {
+                font-size: 1rem;
+                margin-bottom: 0;
+                display: inline;
+                margin-right: 0.3rem;
+            }
+
+            /* Architecture */
+            .architecture-content {
+                gap: 1rem;
+            }
+
+            .architecture-content h3 {
+                font-size: 1.1rem !important;
+                margin-bottom: 0.8rem !important;
+            }
+
+            .architecture-list li {
+                padding: 0.4rem 0.6rem;
+                font-size: 0.75rem;
+                margin-bottom: 0.3rem;
             }
 
             .architecture-image-container {
-                min-height: auto;
-                padding: 1rem;
+                padding: 0.5rem;
+                max-height: 200px;
             }
 
+            .architecture-image {
+                object-fit: contain;
+            }
+
+            /* Metrics: 2 columns, compact */
+            .metrics-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.5rem;
+            }
+
+            .metric-card {
+                padding: 0.8rem 0.5rem;
+            }
+
+            .metric-value {
+                font-size: 1.4rem;
+            }
+
+            .metric-label {
+                font-size: 0.8rem;
+            }
+
+            .metric-description {
+                font-size: 0.7rem;
+            }
+
+            /* Tech: tighter */
+            .tech-categories {
+                gap: 0.6rem;
+            }
+
+            .tech-category {
+                padding: 0.6rem;
+            }
+
+            .tech-category h3 {
+                font-size: 0.9rem;
+                margin-bottom: 0.4rem;
+            }
+
+            .tech-tag {
+                padding: 0.25rem 0.5rem;
+                font-size: 0.7rem;
+                border-width: 1.5px;
+            }
+
+            .tech-tags {
+                gap: 0.4rem;
+            }
+
+            /* Advantages: vertical stacked */
+            .advantages-grid {
+                gap: 0.6rem;
+            }
+
+            .advantage-card {
+                padding: 0.8rem;
+                display: block;
+            }
+
+            .advantage-icon {
+                font-size: 1.2rem;
+                margin-bottom: 0.3rem;
+                display: inline-block;
+            }
+
+            .advantage-card h3 {
+                font-size: 0.9rem;
+                margin-bottom: 0.2rem;
+                display: inline;
+            }
+
+            .advantage-card p {
+                font-size: 0.75rem;
+                line-height: 1.4;
+                margin-top: 0.2rem;
+            }
+
+            /* Team: compact layout */
             .slide-team-layout {
-                grid-template-columns: 1fr;
+                gap: 0.6rem;
             }
 
-            .center-column {
-                order: -1;
+            .team-column h3,
+            .partners-column h3 {
+                font-size: 0.95rem;
+                margin-bottom: 0.4rem;
+            }
+
+            .team-list {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.3rem;
+            }
+
+            .team-member {
+                padding: 0.35rem 0.5rem;
+                gap: 0.4rem;
+            }
+
+            .team-member-avatar {
+                width: 26px;
+                height: 26px;
+                font-size: 0.6rem;
+            }
+
+            .team-member-name {
+                font-size: 0.7rem;
+            }
+
+            .team-member-role {
+                font-size: 0.6rem;
+            }
+
+            .qr-placeholder {
+                width: 90px;
+                height: 90px;
+                margin-bottom: 0.3rem;
+            }
+
+            .qr-placeholder img {
+                width: 75px;
+                height: 75px;
+            }
+
+            .contact-label {
+                font-size: 0.85rem;
+                margin-bottom: 0.3rem;
+            }
+
+            .cta-text {
+                font-size: 0.85rem;
+                margin-top: 0.3rem;
+            }
+
+            .partner-tag {
+                padding: 0.35rem 0.7rem;
+                font-size: 0.75rem;
+            }
+
+            .partners-list {
+                flex-direction: row;
+                gap: 0.4rem;
+            }
+
+            /* Navigation */
+            .nav-btn {
+                width: 36px;
+                height: 36px;
+                font-size: 1rem;
+                border-radius: 8px;
+            }
+
+            .indicator-dot {
+                width: 6px;
+                height: 6px;
             }
         }
 
@@ -717,7 +1075,7 @@
 
     <!-- Slide 1: Title -->
     <section class="slide slide-title" id="slide1">
-        <svg style="position:absolute;bottom:5%;right:0;width:400px;height:200px;opacity:0.2;pointer-events:none"><path d="M0,150 Q100,0 200,100 T400,50" stroke="#97ef41" stroke-width="2" fill="none"/></svg>
+        <svg style="position:absolute;bottom:3%;right:0;width:600px;height:300px;opacity:0.3;pointer-events:none"><path d="M0,220 Q150,0 300,150 T600,70" stroke="#97ef41" stroke-width="2" fill="none"/></svg>
         <div class="container">
             <div class="logo-container">
                 <div class="logo-itmo" style="font-size: 2rem; font-weight: 800; letter-spacing: 0.1em;">ИТМО</div>
@@ -759,7 +1117,7 @@
 
     <!-- Slide 3: Architecture -->
     <section class="slide slide-architecture" id="slide3">
-        <svg style="position:absolute;top:10%;right:0;width:300px;height:300px;opacity:0.12;pointer-events:none"><path d="M300,0 Q200,150 300,300" stroke="#0566f6" stroke-width="2" fill="none"/></svg>
+        <svg style="position:absolute;top:5%;right:0;width:450px;height:450px;opacity:0.25;pointer-events:none"><path d="M450,0 Q300,225 450,450" stroke="#0566f6" stroke-width="2" fill="none"/></svg>
         <div class="container">
             <h2 class="section-title">Архитектура системы</h2>
             <div class="architecture-content">
@@ -785,7 +1143,7 @@
 
     <!-- Slide 4: Performance Metrics -->
     <section class="slide slide-metrics" id="slide4">
-        <svg style="position:absolute;top:0;left:0;width:250px;height:200px;opacity:0.15;pointer-events:none"><path d="M0,200 Q125,0 250,100" stroke="#97ef41" stroke-width="2" fill="none"/></svg>
+        <svg style="position:absolute;top:0;left:0;width:400px;height:300px;opacity:0.3;pointer-events:none"><path d="M0,300 Q200,0 400,150" stroke="#97ef41" stroke-width="2" fill="none"/></svg>
         <div class="container">
             <h2 class="section-title">Метрики производительности</h2>
             <div class="metrics-grid">
@@ -896,7 +1254,7 @@
 
     <!-- Slide 7: Team, Partners & Contact -->
     <section class="slide slide-team" id="slide7">
-        <svg style="position:absolute;bottom:10%;left:0;width:350px;height:150px;opacity:0.12;pointer-events:none"><path d="M0,75 Q175,0 350,75" stroke="#0566f6" stroke-width="2" fill="none"/></svg>
+        <svg style="position:absolute;bottom:5%;left:0;width:500px;height:220px;opacity:0.25;pointer-events:none"><path d="M0,110 Q250,0 500,110" stroke="#0566f6" stroke-width="2" fill="none"/></svg>
         <div class="container">
             <h2 class="section-title">Команда и контакты</h2>
 
